@@ -122,18 +122,18 @@ func main() {
 
 	client := &http.Client{Timeout: 30000 * time.Millisecond}
 
-	go func() {
-		for _, city := range cities {
-
-			cd, err := queryCityWeather(city, client)
-			if err != nil {
-				log.Fatal(err)
-			}
-			ch <- cd
-		}
-	}()
-
 	for _, city := range cities {
+		go func() {
+			for _, city := range cities {
+
+				cd, err := queryCityWeather(city, client)
+				if err != nil {
+					log.Fatal(err)
+				}
+				ch <- cd
+			}
+		}()
+
 		cd := <-ch
 		fmt.Printf("===================== Weather: %s======================\n", city)
 		fmt.Println("City", cd.city, "Country", cd.country, "Lat", cd.lat, "Lon", cd.lon, "Temp", cd.temp, "Feels_like", cd.feelsLike)
