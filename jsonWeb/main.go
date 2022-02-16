@@ -124,14 +124,12 @@ func main() {
 
 	for _, city := range cities {
 		go func() {
-			for _, city := range cities {
 
-				cd, err := queryCityWeather(city, client)
-				if err != nil {
-					log.Fatal(err)
-				}
-				ch <- cd
+			cd, err := queryCityWeather(city, client)
+			if err != nil {
+				log.Fatal(err)
 			}
+			ch <- cd
 		}()
 
 		cd := <-ch
